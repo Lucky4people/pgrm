@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PGRM product activation</title>
+   
+    
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="/__/firebase/8.3.2/firebase-app.js"></script>
+    <!-- update the version number as needed -->
+    <script src="/__/firebase/8.3.2/firebase-auth.js"></script>
+    <script src="/__/firebase/8.3.2/firebase-database.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="/__/firebase/8.3.2/firebase-analytics.js"></script>
+    
+    <!-- Initialize Firebase -->
+    <script src="/__/firebase/init.js"></script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth__uk.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
+    <script type="text/javascript">
+      // FirebaseUI config.
+      var uiConfig = {
+        signInSuccessUrl: '/user',
+        signInOptions: [
+            {  
+                provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+                defaultCountry: 'UA',
+                recaptchaParameters: {
+                    size: 'invisible' // 'invisible' or 'compact'
+                }
+            }
+        ],
+        // defaultNationalNumber: '380631234567',
+        // loginHint: '+380631112233',
+        // whitelistedCountries: ['UA', '+380'],
+        // tosUrl and privacyPolicyUrl accept either url string or a callback
+        // function.
+        // Terms of service url/callback.
+        tosUrl: '<your-tos-url>',
+        // Privacy policy url/callback.
+        privacyPolicyUrl: function() {
+          window.location.assign('<your-privacy-policy-url>');
+        }
+      };
+
+      // Initialize the FirebaseUI Widget using Firebase.
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded.
+      ui.start('#firebaseui-auth-container', uiConfig);
+    </script>
+  </head>
+  <body>
+    <!-- The surrounding HTML is left untouched by FirebaseUI.
+         Your app may use that space for branding, controls and other customizations.-->
+    <h2>PGRM product activation</h2>
+    <div id="detailsInfo">Loading...</div>
+    <div id="firebaseui-auth-container"></div>
+   
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const loadEl = document.querySelector('#load');
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        // // The Firebase SDK is initialized and available here!
+        //
+        // firebase.auth().onAuthStateChanged(user => { });
+        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+        // firebase.firestore().doc('/foo/bar').get().then(() => { });
+        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
+        // firebase.messaging().requestPermission().then(() => { });
+        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+        // firebase.analytics(); // call to activate
+        // firebase.analytics().logEvent('tutorial_completed');
+        // firebase.performance(); // call to activate
+        //
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+        let url = new URL(window.location.href)
+        let params = new URLSearchParams(url.search);
+        let productId = params.get('id');
+        let productType = params.get('type');
+        
+        console.log('productId: ' + productId);
+        console.log('productType: '+ productType);
+        
+        let linkPath = 'nfcLinks/' + productType + '/' + productId;
+        
+
+        console.log('linkPath: '+ linkPath);
+        
+        var database = firebase.database();
+        var linkPathRef = database.ref(linkPath);
+        var linkData;
+        linkPathRef.once("value").then(function (snapshot) {
+          const data = snapshot.val();
+          // console.log(data);
+          // let hasChildren = snapshot.hasChildren();//either "true" or "false"
+          // snapshot.forEach(function(element) 
+          // {
+          //   // . . . not important here
+          // });
+          // return admin.database().ref("/achievementsCount_total").set(hasChildren);
+
+          return data;
+        }).then((data) => {
+          
+          linkData = data;
+          let productPath = 'products/' + productType + '/' + data.name;
+          console.log('productPath: '+ productPath);
+          var productPathRef = database.ref(productPath);
+
+          return productPathRef.once("value")
+        }).then((productSnapshot) => {
+          let productDetails = productSnapshot.val();
+          console.log(productDetails);
+          document.getElementById("detailsInfo").innerHTML = productDetails.name + ' ' + linkData.color + ' ' + productDetails.price + ' ' + linkData.created + ' ' + productDetails.image;
+          
+        });
+
+        // starCountRef.once('value', (snapshot) => {
+        //   const data = snapshot.val();
+        //   console.log(data);
+        // });
+
+      });
+    </script>
+    
+    </body>
+</html>
