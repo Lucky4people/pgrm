@@ -413,7 +413,7 @@ exports.generateSuccessActivationHTML = function(details) {
                 <h1>POGROM</h1>
                 <!-- Hero Title Info -->
                 <div class="login">
-                    <label class="top_text"><img src="/img/logo_pogrom.svg" alt="logo">1111Реєстрація</label>
+                    <label class="top_text"><img src="/img/logo_pogrom.svg" alt="logo">Hello</label>
                     <span class="border"></span>
                     <div class="description">
                         <p class="name_product"><label><a href="https://www.instagram.com/pgrm.clo/">${product.name}</a></label></p>
