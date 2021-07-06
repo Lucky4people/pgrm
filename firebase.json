@@ -1,0 +1,27 @@
+{
+  "hosting": {
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/activate/**",
+        "function": "activateProduct"
+      },
+      {
+        "source": "/user/**",
+        "function": "userDetails"
+      },
+      {
+        "source": "/status**",
+        "function": "status"
+      }
+    ]
+  },
+  "functions": {
+    "source": "functions"
+  }
+}
