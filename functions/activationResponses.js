@@ -203,7 +203,7 @@ function getCss() {
         width: 100%;
         margin: 0 auto;
       }
-      p.name_product a{
+      p.name_product, p.name_product a{
         font-size: 20px;
         font-weight: 500;
         color:#478698;
@@ -442,22 +442,12 @@ exports.generateSuccessActivationHTML = function(details) {
                 <p class="tel">Номер телефона владельца <br><a class="ico" href="tel:${phoneNumber}"><i class="icon_smartphone"></i>${phoneNumber}</a></p>
                     <span class="border"></span>
                     <div class="description">
-                        <p class="name_product"><label><a href="https://www.instagram.com/pgrm.clo/">${product.name}</a></label></p>
+                        <p class="name_product"><label>${product.name}</label></p>
                     </div>
-                    <div class="info">
-                        <p class="date">Дата покупки: <br><label>${product.creation}</label></p>
-                        <p class="lastPrice">Цена: <br><label>${product.price} грн.</label></p>
-                        <p class="active">Активация <br><label>Активирован</label></p>
-                        
-                        
-                        <div style="clear:both;"></div>
-                    </div>
+                    
                     <div style="clear:both;"></div>
                     <div class="img">
-                        <a href="https://www.instagram.com/pgrm.clo/">
-                            <img class="img_product" src="${product.image}" />
-                        </a>
-                        
+                        <img class="img_product" src="${product.image}" />                           
                     </div>
                     
                     
